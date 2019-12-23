@@ -10,11 +10,28 @@ import Grid from '@material-ui/core/Grid'
 import { withFormik, Form,Field } from 'formik'
 import Typography from '@material-ui/core/Typography'
 import * as Yup from 'yup'
+import {useHistory  } from "react-router-dom";
+
+// const ButtonSubmit = () => (
+//     <Route render={({ history}) => (
+//         <Button
+//         variant='extendedFab'
+//         color='primary'
+//         type='submit'
+//         onClick={() => { history.push('/todo') }}
+//     >
+//         Log in
+//     </Button>
+    
+//     )} />
+//   )
+
+
 class LoginForm extends Component {
 
     render() {
         return (
-            <Form>
+            <form  onSubmit={this.props.handleSubmit}>
                 <Grid container justify='center' alignContent='center'>
                     <Grid item xs={6} md={4}>
                         <Paper elevation={4} style={{ padding: '20px 15px', marginTop: '30px' }}>
@@ -44,18 +61,20 @@ class LoginForm extends Component {
 
 
                             <FormControl fullWidth margin='normal'>
+                            {/* <ButtonSubmit> Log in</ButtonSubmit> */}
                                 <Button
                                     variant='extendedFab'
                                     color='primary'
                                     type='submit'
-                                >
-                                    Log in
-                                </Button>
+                                   
+                                >Log In
+                                </Button>                        
+                                
                             </FormControl>
                         </Paper>
                     </Grid>
                 </Grid>
-            </Form>
+            </form>
         )
     }
 }
@@ -66,15 +85,25 @@ const FormikForm = withFormik({
             password: '',
         }
     },
+
+    handleSubmit: (values,{ props }) => { 
+      
+        setTimeout(() => {
+          alert(JSON.stringify(values, null, 2));
+      
+          props.history.push('/todo');
+        }, 1000);
+      },
+ 
     validationSchema: Yup.object().shape({ // Validate form field
         username: Yup.string()
             .required('Username is required')
             .min(5, 'Username must have min 5 characters')
             .max(10, 'Username have max 10 characters'),
-            password: Yup.string()
-            .required('Username is required')
-            .min(8, 'Username must have min 8 characters')
-            .max(10, 'Username have max 10 characters'),
+        password: Yup.string()
+            .required('Password is required')
+            .min(8, 'Password must have min 8 characters')
+            .max(10, 'Password have max 10 characters'),
     }),
 })(LoginForm)
 
